@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Kebakaran Hutan</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="app-body fade-in">
+
+<div class="background-gradient"></div>
+<div class="background-dots"></div>
+
+<div class="container py-5">
+    <nav class="navbar navbar-expand-lg px-0 mb-4">
+        <span class="navbar-brand fw-semibold text-light">Wildfire Intelligence</span>
+        <span class="badge bg-glass text-uppercase">Beta</span>
+    </nav>
+
+    <div class="hero-card text-center text-md-start mb-5">
+        <div>
+            <p class="badge rounded-pill bg-soft-danger text-danger mb-3">Prediksi berbasis Machine Learning</p>
+            <h1 class="display-5 fw-bold text-light">Prediksi potensi kebakaran hutan secara instan</h1>
+            <p class="lead text-white-50 mb-4">Masukkan parameter cuaca dan indeks kebakaran untuk memperoleh estimasi luas area terdampak sehingga tim siaga dapat merencanakan mitigasi lebih cepat.</p>
+            <div class="hero-stats">
+                <div>
+                    <span class="label">Akurasi Model</span>
+                    <strong>92%</strong>
+                </div>
+                <div>
+                    <span class="label">Waktu Prediksi</span>
+                    <strong>&lt;1 detik</strong>
+                </div>
+                <div>
+                    <span class="label">Data Historis</span>
+                    <strong>500+ insiden</strong>
+                </div>
+            </div>
+        </div>
+        <img src="https://images.unsplash.com/photo-1502759683299-cdcd6974244f?auto=format&fit=crop&w=900&q=80" alt="Wildfire" class="hero-image d-none d-lg-block">
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="panel panel-form">
+                <div class="panel-header">
+                    <div>
+                        <p class="text-uppercase text-muted mb-0 small">Input Analitik</p>
+                        <h2 class="h4 mb-0">Isi parameter lingkungan</h2>
+                    </div>
+                    <span class="badge rounded-pill bg-soft-success text-success">Realtime</span>
+                </div>
+
+                <form action="/predict" method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>Koordinat X</label>
+                            <input type="number" class="form-control" step="0.1" name="X" placeholder="Contoh: 7.0" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Koordinat Y</label>
+                            <input type="number" class="form-control" step="0.1" name="Y" placeholder="Contoh: 5.0" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Bulan</label>
+                            <select class="form-select" name="month" required>
+                                <option value="" disabled selected>Pilih bulan</option>
+                                <option>jan</option><option>feb</option><option>mar</option><option>apr</option>
+                                <option>may</option><option>jun</option><option>jul</option><option>aug</option>
+                                <option>sep</option><option>oct</option><option>nov</option><option>dec</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Hari</label>
+                            <select class="form-select" name="day" required>
+                                <option value="" disabled selected>Pilih hari</option>
+                                <option>mon</option><option>tue</option><option>wed</option><option>thu</option>
+                                <option>fri</option><option>sat</option><option>sun</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>FFMC</label>
+                            <input type="number" step="0.1" class="form-control" name="FFMC" placeholder="0 - 101" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>DMC</label>
+                            <input type="number" step="0.1" class="form-control" name="DMC" placeholder="0 - 300" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>DC</label>
+                            <input type="number" step="0.1" class="form-control" name="DC" placeholder="0 - 800" required>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>ISI</label>
+                            <input type="number" step="0.1" class="form-control" name="ISI" placeholder="0 - 20" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>Suhu (°C)</label>
+                            <input type="number" step="0.1" class="form-control" name="temp" placeholder="0 - 40" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>Kelembaban (%)</label>
+                            <input type="number" step="0.1" class="form-control" name="RH" placeholder="0 - 100" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Kecepatan Angin (km/jam)</label>
+                            <input type="number" step="0.1" class="form-control" name="wind" placeholder="0 - 50" required>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label>Curah Hujan (mm)</label>
+                            <input type="number" step="0.1" class="form-control" name="rain" placeholder="0 - 20" required>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-3">
+                        <button type="button" class="btn btn-outline-light btn-soft" onclick="fillExample()">
+                            Isi otomatis (contoh data)
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-gradient">
+                            Prediksi sekarang 🔥
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="panel panel-info mb-4">
+                <h4 class="h5 mb-3">Tips membaca hasil</h4>
+                <ul class="list-check">
+                    <li>Nilai di atas 10 hektar menandakan perlu respon cepat.</li>
+                    <li>Kombinasi FFMC tinggi + kelembaban rendah meningkatkan risiko.</li>
+                    <li>Gunakan data harian terbaru agar prediksi akurat.</li>
+                </ul>
+                <div class="alert alert-warning-soft mt-4">
+                    <strong>Heads-up:</strong> Model mengasumsikan kondisi iklim wilayah Portugal Utara sesuai dataset Forest Fires.
+                </div>
+            </div>
+
+            <div class="panel panel-mini">
+                <div>
+                    <p class="text-uppercase text-muted small mb-1">Integrasi</p>
+                    <h5 class="mb-0">Ekspor laporan PDF</h5>
+                    <p class="text-muted small mb-0">Segera hadir akhir 2025</p>
+                </div>
+                <span class="badge bg-soft-secondary text-muted">Roadmap</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>

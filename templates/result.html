@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Prediksi</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body class="app-body fade-in">
+<div class="background-gradient"></div>
+<div class="background-dots"></div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="panel panel-result text-center mb-4">
+                <p class="badge rounded-pill bg-soft-danger text-danger mb-3">Prediksi selesai</p>
+                <h1 class="h3 mb-2 text-light">Estimasi luas area terbakar</h1>
+                <p class="text-white-50 mb-4">Gunakan nilai ini sebagai dasar tindakan mitigasi di lapangan.</p>
+
+                <div class="prediction-value">
+                    <span class="label">Total estimasi</span>
+                    <h2 class="display-5 fw-bold text-light">{{ prediction }} <span>hektar</span></h2>
+                </div>
+            </div>
+
+            <div class="panel panel-summary mb-4">
+                <div class="panel-header mb-3">
+                    <div>
+                        <p class="text-uppercase text-muted small mb-0">Ringkasan Input</p>
+                        <h2 class="h5 mb-0">Data yang Anda masukkan</h2>
+                    </div>
+                    <span class="badge bg-soft-secondary text-muted">Detail</span>
+                </div>
+                <div class="row">
+                    {% for k, v in raw_input.items() %}
+                    <div class="col-sm-6 mb-3">
+                        <p class="summary-label mb-1">{{ k }}</p>
+                        <div class="summary-value">{{ v }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="d-grid gap-3">
+                <a href="/" class="btn btn-primary btn-gradient">🔙 Kembali ke halaman utama</a>
+                <button class="btn btn-outline-light btn-soft" onclick="window.print()">Unduh sebagai PDF</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
+
